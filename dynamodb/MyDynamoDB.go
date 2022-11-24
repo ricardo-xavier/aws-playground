@@ -1,4 +1,4 @@
 package dynamodb
 
-type MyDynamoDV struct {
+type MyDynamoDB struct {
 }
