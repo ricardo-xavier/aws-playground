@@ -1,4 +1,4 @@
-package demo;
+package mycloud.demo.nosql;
 
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
