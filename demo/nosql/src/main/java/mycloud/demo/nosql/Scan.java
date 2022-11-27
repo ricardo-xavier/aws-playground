@@ -34,7 +34,9 @@ public class Scan {
                 .expressionValues(expressionValues)
                 .build();
 
-        ScanEnhancedRequest request = ScanEnhancedRequest.builder().filterExpression(expression).build();
+        ScanEnhancedRequest request = ScanEnhancedRequest.builder()
+                .filterExpression(expression)
+                .build();
 
         DynamoDbTable<User> userTable = enhancedClient.table("PAULOBET", TableSchema.fromBean(User.class));
         for (User user : userTable.scan(request).items()) {
