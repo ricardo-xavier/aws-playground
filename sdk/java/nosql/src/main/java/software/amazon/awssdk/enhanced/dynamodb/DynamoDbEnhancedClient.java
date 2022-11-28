@@ -10,6 +10,6 @@ public class DynamoDbEnhancedClient {
     }
 
     public <T> DynamoDbTable<T> table(String name, TableSchema<T> schema) {
-        return new DynamoDbTable<>();
+        return new DynamoDbTable<>(name, schema);
     }
 }
