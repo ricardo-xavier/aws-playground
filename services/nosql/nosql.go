@@ -7,12 +7,12 @@ import (
 )
 
 func main() {
-    port := "9000"
-    http.HandleFunc("/dynamodb/", Handler)
+    port := "9000" //TODO configurar porta
+    http.HandleFunc("/nosql/scan", ScanHandler)
     http.ListenAndServe(":"+port, nil)
 }
 
-func Handler(res http.ResponseWriter, req *http.Request) {
+func ScanHandler(res http.ResponseWriter, req *http.Request) {
     var scanRequest model.ScanRequest
     err := json.NewDecoder(req.Body).Decode(&scanRequest)
     if err != nil {
