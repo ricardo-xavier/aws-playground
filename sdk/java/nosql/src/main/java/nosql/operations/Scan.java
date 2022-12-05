@@ -12,7 +12,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Scan<T> {
@@ -29,60 +28,25 @@ public class Scan<T> {
             ObjectMapper mapper = new ObjectMapper();
             String json = mapper.writeValueAsString(scanRequest);
 
+            String url = System.getProperty("URL_NOSQL");
+            if (url == null) {
+                throw new Exception("URL_NOSQL undefined");
+            }
+
             HttpClient httpClient = HttpClient.newBuilder().build();
             HttpRequest httpRequest = HttpRequest.newBuilder()
                     .POST(HttpRequest.BodyPublishers.ofString(json))
-                    .uri(URI.create("http://localhost:9000/nosql/scan")) //TODO configurar
+                    .uri(URI.create(url + "scan"))
                     .setHeader("Content-Type", "application/json")
                     .build();
 
             HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-
             ScanResponse response = mapper.readValue(httpResponse.body(), ScanResponse.class);
-
-            List<T> items = new ArrayList<>();
-            for (String record : response.getItems()) {
-                StringBuilder jsonObject = new StringBuilder("{\n");
-                String[] values = record.split("\\|");
-                boolean first = true;
-                for (int i = 0; i < response.getFields().size(); i++) {
-                    if (i < values.length) {
-                        String alias = schema.getAttributeNameMap().get(response.getFields().get(i));
-                        if (alias == null) {
-                            alias = response.getFields().get(i);
-                        }
-                        String tp = schema.getAttributeTypeMap().get(alias);
-                        if (tp == null) {
-                            continue;
-                        }
-                        if (first) {
-                            first = false;
-                        } else {
-                            jsonObject.append(",\n");
-                        }
-                        jsonObject.append(quoted(alias)).append(":");
-                        if (tp.equals("String")) {
-                            jsonObject.append(quoted(values[i]));
-                        } else {
-                            jsonObject.append(values[i]);
-                        }
-                    }
-                }
-                jsonObject.append("\n}");
-                T item = (T) mapper.readValue(jsonObject.toString(), schema.getInstance().getClass());
-                items.add(item);
-            }
-
-            return new PageIterable<>(items);
+            return new PageIterable<>(schema, response.getFields(), response.getItems());
 
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
-
-    private String quoted(String s) {
-        return "\"" + s + "\"";
-    }
-
 }

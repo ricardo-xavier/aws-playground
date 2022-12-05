@@ -2,21 +2,21 @@
 
 ## Objetivo
 
-O objetivo do mycloud é permitir a criação e utilização de uma infraestrutura local, semelhante a AWa.
-Essa infraestrutura poderá ser utilizada para estudo, testes, experimentos e no início do desenvolvimento de micro-serviços.
+O objetivo do mycloud é permitir a criação e utilização de uma infraestrutura local, semelhante a AWS.
+Essa infraestrutura poderá ser utilizada para estudos, testes, experimentos e na fase inicial do desenvolvimento de micro-serviços.
 
 Os micro-serviços que utilizam o sdk java da aws poderão acessar a infraestrutura do mycloud sem nenhuma alteração nos programas, basta alterar a dependência no pom.
 
-exemplo:
+Exemplo:
 
-sdk do dynamodb da aws:
+    sdk do dynamodb da aws:
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>dynamodb-enhanced</artifactId>
             <version>2.18.24</version>
         </dependency>
 
-sdk do nosql do mycloud:
+    sdk do nosql do mycloud:
         <dependency>
             <groupId>mycloud.sdk</groupId>
             <artifactId>nosql</artifactId>
@@ -39,5 +39,6 @@ sdk do nosql do mycloud:
 O sdk java será escrito em JAVA, o restante será escrito em GO.
 
 RELEASE NOTES:
-nosql 0.1.0 - scan, filter
-demo nosql 0.1.0 - scan
+- service nosql 0.1.0 - scan, filter
+- sdk nosql 0.1.0 - scan, filter
+- demo nosql 0.1.0 - scan, filter

@@ -1,13 +1,22 @@
 package main
 
 import (
+    "fmt"
+    "os"
     "encoding/json"
     "net/http"
     "nosql/model"
 )
 
 func main() {
-    port := "9000" //TODO configurar porta
+    if len(os.Args) != 2 {
+        fmt.Println("mycloud_nosql <port>")
+    }
+    if os.Args[1] == "-v" {
+        fmt.Println("nosql 0.1.0")
+        return
+    }
+    port := os.Args[1]
     http.HandleFunc("/nosql/scan", ScanHandler)
     http.ListenAndServe(":"+port, nil)
 }
