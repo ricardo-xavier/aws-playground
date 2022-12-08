@@ -3,7 +3,7 @@ all: mycloud_nosql
 clean:
 	rm -f mycloud_nosql
 
-run:
+run: mycloud_nosql
 	./mycloud_nosql 9000
 
 curl:
@@ -12,6 +12,9 @@ curl:
 demo:
 	cd /home/ricardo/git/mycloud/demo/nosql; mvn clean install; cd target; java -DURL_NOSQL=http://localhost:9000/nosql/ -cp nosql-0.1.0-SNAPSHOT.jar mycloud.demo.nosql.Scan
 
+run_demo:
+	cd /home/ricardo/git/mycloud/demo/nosql/target; java -DURL_NOSQL=http://localhost:9000/nosql/ -cp nosql-0.1.0-SNAPSHOT.jar mycloud.demo.nosql.Scan
 
-mycloud_nosql: nosql.go scan.go model/scan_request.go model/scan_response.go
-	go build -o mycloud_nosql nosql.go scan.go 
+
+mycloud_nosql: nosql.go schema.go scan.go model/scan_request.go model/scan_response.go
+	go build -o mycloud_nosql nosql.go schema.go scan.go 

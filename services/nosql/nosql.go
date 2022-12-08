@@ -17,6 +17,7 @@ func main() {
         return
     }
     port := os.Args[1]
+    fmt.Printf("nosql listening on port %s...\n", port)
     http.HandleFunc("/nosql/scan", ScanHandler)
     http.ListenAndServe(":"+port, nil)
 }
@@ -27,10 +28,12 @@ func ScanHandler(res http.ResponseWriter, req *http.Request) {
     if err != nil {
         panic(err)
     }
-    response := Scan(scanRequest.Table, scanRequest.Filter)
-    jsonResponse, err := json.Marshal(response)
+    fmt.Printf("nosql scan %s...\n", scanRequest.Table)
+    scanResponse := Scan(scanRequest.Table, scanRequest.Filter)
+    fmt.Printf("nosql scan %s %d\n", scanRequest.Table, len(scanResponse.Items))
+    response, err := json.Marshal(scanResponse)
     if err != nil {
         panic(err)
     }
-    res.Write([]byte(jsonResponse))
+    res.Write([]byte(response))
 }

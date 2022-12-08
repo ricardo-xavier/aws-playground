@@ -39,6 +39,4 @@ Exemplo:
 O sdk java será escrito em JAVA, o restante será escrito em GO.
 
 RELEASE NOTES:
-- service nosql 0.1.0 - scan, filter
-- sdk nosql 0.1.0 - scan, filter
-- demo nosql 0.1.0 - scan, filter
+0.1.0 - nosql scan e filter

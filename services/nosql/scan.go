@@ -9,13 +9,19 @@ import (
 
 func Scan(tableName string, filter []model.Filter) model.ScanResponse {
     var response model.ScanResponse
+
+    attrs := LoadSchema(tableName)
+    var fieldNames []string
+    for _, attr := range attrs {
+        fieldNames = append(fieldNames, attr.Name)
+    }
+    response.Fields = fieldNames
+
     f, err := os.Open(tableName + ".dat")
     if err != nil {
         panic(err)
     }
     scanner := bufio.NewScanner(f)
-    scanner.Scan()
-    response.Fields = strings.Split(scanner.Text(), "|")
     for scanner.Scan() {
         item := scanner.Text()
         if len(filter) > 0 {
