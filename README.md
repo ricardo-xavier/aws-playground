@@ -5,7 +5,7 @@
 O objetivo do mycloud é permitir a criação e utilização de uma infraestrutura local semelhante a AWS.
 Essa infraestrutura poderá ser utilizada para estudos, experimentos e testes.
 
-Os micro-serviços que utilizam o sdk java da aws poderão acessar a infraestrutura do mycloud sem nenhuma alteração nos programas, basta alterar a dependência no pom.
+Os micro-serviços que utilizam o sdk java da aws poderão acessar a infraestrutura do mycloud sem nenhuma alteração no código, basta alterar a dependência no pom.
 
 Exemplo:
 
