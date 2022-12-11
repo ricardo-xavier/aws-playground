@@ -9,8 +9,14 @@ public class AttributeValueBuilder {
     }
 
     public AttributeValueBuilder s(String s) {
-        this.attributeType = AttributeType.STRING;
+        this.attributeType = AttributeType.S;
         this.value = s;
+        return this;
+    }
+
+    public AttributeValueBuilder n(Integer n) {
+        this.attributeType = AttributeType.N;
+        this.value = n;
         return this;
     }
 

@@ -21,7 +21,7 @@ public class Filter {
         filter.setAttr(tokens[0]);
         filter.setOp("=");
         AttributeValue av = values.get(tokens[2]);
-        if (av.getAttributeType() != AttributeType.STRING) {
+        if (av.getAttributeType() != AttributeType.S) {
             throw new Exception("invalid type: " + av);
         }
         filter.setType("S");

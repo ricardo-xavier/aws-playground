@@ -1,3 +1,4 @@
 target/
 .idea/
 nosql.iml
+*.csv

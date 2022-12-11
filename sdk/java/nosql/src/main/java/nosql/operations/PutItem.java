@@ -32,9 +32,13 @@ public class PutItem<T> {
                                 break;
                             }
                         }
-                        //TODO outros tipos
-                        String fieldValue = (String) method.invoke(item);
-                        items.put(alias, AttributeValue.builder().s(fieldValue).build());
+                        if (fieldType.equals("String")) {
+                            String fieldValue = (String) method.invoke(item);
+                            items.put(alias, AttributeValue.builder().s(fieldValue).build());
+                        } else {
+                            Integer fieldValue = (Integer) method.invoke(item);
+                            items.put(alias, AttributeValue.builder().n(fieldValue).build());
+                        }
                     }
                 }
             }
