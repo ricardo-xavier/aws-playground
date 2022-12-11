@@ -10,12 +10,8 @@ import (
 func Scan(tableName string, filter []model.Filter) model.ScanResponse {
     var response model.ScanResponse
 
-    attrs := LoadSchema(tableName)
-    var fieldNames []string
-    for _, attr := range attrs {
-        fieldNames = append(fieldNames, attr.Name)
-    }
-    response.Fields = fieldNames
+    schema := model.ReadSchema(tableName + ".sch")
+    response.Fields = schema.GetFieldNames()
 
     f, err := os.Open(tableName + ".dat")
     if err != nil {

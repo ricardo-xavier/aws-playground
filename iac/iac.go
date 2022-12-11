@@ -2,25 +2,12 @@ package main
 
 import (
     "bufio"
+    "bytes"
     "fmt"
     "strings"
     "os"
-    "encoding/json"
+    "net/http"
 )
-
-type DynamodbAttribute struct {
-    Name string `json:"name"`
-    Type string `json:"type"`
-}
-
-type Inputs struct {
-    TableName string `json:"table_name"`
-    HashKey string `json:"hash_key"`
-    HashKeyType string `json:"hash_key_type"`
-    RangeKey string `json:"range_key"`
-    RangeKeyType string `json:"range_key_type"`
-    DynamodbAttributes []DynamodbAttribute `json:"dynamodb_attributes"`
-}
 
 func main() {
     if len(os.Args) != 2 || os.Args[1] != "apply" {
@@ -71,11 +58,19 @@ func apply() {
         }
     }
     f.Close()
+
+
     inputsJson = strings.ReplaceAll(inputsJson, ",\n}", "\n}")
     inputsJson = strings.ReplaceAll(inputsJson, ",\n]", "\n]")
     inputsJson = inputsJson[0:len(inputsJson)-2]
 
-    inputs := Inputs{}
-    json.Unmarshal([]byte(inputsJson), &inputs)
-    fmt.Println(inputs)
+    url := os.Getenv("URL_NOSQL")
+    if url == "" {
+        panic("URL_NOSQL undefined")
+    }
+    response, err := http.Post(url + "create", "application/json", bytes.NewBuffer([]byte(inputsJson)))
+    if err != nil {
+        panic(err)
+    }
+    fmt.Println(response)
 }

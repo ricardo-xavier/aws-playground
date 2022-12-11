@@ -19,6 +19,7 @@ func main() {
     port := os.Args[1]
     fmt.Printf("nosql listening on port %s...\n", port)
     http.HandleFunc("/nosql/scan", ScanHandler)
+    http.HandleFunc("/nosql/create", CreateHandler)
     http.ListenAndServe(":"+port, nil)
 }
 
@@ -36,4 +37,14 @@ func ScanHandler(res http.ResponseWriter, req *http.Request) {
         panic(err)
     }
     res.Write([]byte(response))
+}
+
+func CreateHandler(res http.ResponseWriter, req *http.Request) {
+    var createRequest model.CreateRequest
+    err := json.NewDecoder(req.Body).Decode(&createRequest)
+    if err != nil {
+        panic(err)
+    }
+    fmt.Printf("nosql create %v...\n", createRequest.TableName)
+    Create(createRequest)
 }
