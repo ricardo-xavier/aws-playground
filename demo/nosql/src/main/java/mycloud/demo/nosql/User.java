@@ -2,6 +2,8 @@ package mycloud.demo.nosql;
 
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbAttribute;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortKey;
 
 @DynamoDbBean
 public class User {
@@ -9,6 +11,7 @@ public class User {
     private String name;
     private String password;
 
+    @DynamoDbPartitionKey
     @DynamoDbAttribute(value = "hash")
     public String getId() {
         return id;
@@ -16,6 +19,14 @@ public class User {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    @DynamoDbSortKey
+    public String getSort() {
+        return "USER";
+    }
+
+    public void setSort(String sort) {
     }
 
     public String getName() {
