@@ -2,7 +2,7 @@ package software.amazon.awssdk.services.dynamodb.model;
 
 public class AttributeValueBuilder {
     private AttributeType attributeType;
-    private Object value;
+    private String value;
 
     public AttributeValue build() {
         return new AttributeValue(this);
@@ -16,7 +16,7 @@ public class AttributeValueBuilder {
 
     public AttributeValueBuilder n(Integer n) {
         this.attributeType = AttributeType.N;
-        this.value = n;
+        this.value = String.valueOf(n);
         return this;
     }
 

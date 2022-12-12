@@ -20,6 +20,7 @@ func main() {
     fmt.Printf("nosql listening on port %s...\n", port)
     http.HandleFunc("/nosql/scan", ScanHandler)
     http.HandleFunc("/nosql/create", CreateHandler)
+    http.HandleFunc("/nosql/put-item", PutItemHandler)
     http.ListenAndServe(":"+port, nil)
 }
 
@@ -47,4 +48,14 @@ func CreateHandler(res http.ResponseWriter, req *http.Request) {
     }
     fmt.Printf("nosql create %v...\n", createRequest.TableName)
     Create(createRequest)
+}
+
+func PutItemHandler(res http.ResponseWriter, req *http.Request) {
+    var putItemRequest model.PutItemRequest
+    err := json.NewDecoder(req.Body).Decode(&putItemRequest)
+    if err != nil {
+        panic(err)
+    }
+    fmt.Printf("nosql put-item %v [%v]...\n", putItemRequest.Table, putItemRequest.Items)
+    PutItem(putItemRequest)
 }
