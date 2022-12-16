@@ -11,6 +11,7 @@ func PutItem(request model.PutItemRequest) {
     if err != nil {
         panic(err)
     }
+    pos, _ := dat.Seek(0, 1)
 
     var values [256]string
     save := false
@@ -36,6 +37,7 @@ func PutItem(request model.PutItemRequest) {
     if save {
         schema.Write(request.Table + ".sch")
     }
+
     for i := 0; i < len(schema.Attributes); i++ {
         if i > 0 {
             dat.WriteString("|")
@@ -44,4 +46,25 @@ func PutItem(request model.PutItemRequest) {
     }
     dat.WriteString("\n")
     dat.Close()
+
+    for _, index := range schema.Indexes {
+        btree := BTreeOpen(index.Name)
+        key := ""
+        for i, a := range schema.Attributes {
+            if a.Name == index.Hash {
+                key = values[i]
+                break
+            }
+        }
+        if index.Range != "" {
+            for i, a := range schema.Attributes {
+                if a.Name == index.Range {
+                    key = key + values[i]
+                    break
+                }
+            }
+        }
+        btree.PutItem(key, pos)
+        btree.Close()
+    }
 }

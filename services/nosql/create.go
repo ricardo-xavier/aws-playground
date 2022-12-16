@@ -2,7 +2,6 @@ package main
 
 import (
     "os"
-    "encoding/binary"
     "nosql/model"
 )
 
@@ -11,7 +10,7 @@ import (
 func Create(request model.CreateRequest) {
     dat(request)
     sch(request)
-    idx(request)
+    BTreeCreate(request.TableName)
 }
 
 func dat(request model.CreateRequest) {
@@ -35,19 +34,4 @@ func sch(request model.CreateRequest) {
         schema.Indexes = append(schema.Indexes, index)
     }
     schema.Write(request.TableName + ".sch")
-}
-
-func idx(request model.CreateRequest) {
-    f, err := os.Create(request.TableName + ".idx")
-    if err != nil {
-        panic(err)
-    }
-    buf := make([]byte, 8 + 4096)
-    b := make([]byte, 4)
-    binary.LittleEndian.PutUint32(b, 1)
-    copy(buf[0:], b)
-    binary.LittleEndian.PutUint32(b, 0)
-    copy(buf[4:], b)
-    f.Write(buf)
-    f.Close()
 }
