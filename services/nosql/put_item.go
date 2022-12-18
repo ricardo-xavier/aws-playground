@@ -2,16 +2,17 @@ package main
 
 import (
     "os"
+    "nosql/btree"
     "nosql/model"
 )
 
 func PutItem(request model.PutItemRequest) {
     schema := model.ReadSchema(request.Table + ".sch")
-    dat, err := os.OpenFile(request.Table + ".dat", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+    dat, err := os.OpenFile(request.Table + ".dat", os.O_CREATE|os.O_WRONLY, 0644)
     if err != nil {
         panic(err)
     }
-    pos, _ := dat.Seek(0, 1)
+    pos, _ := dat.Seek(0, 2)
 
     var values [256]string
     save := false
@@ -48,7 +49,7 @@ func PutItem(request model.PutItemRequest) {
     dat.Close()
 
     for _, index := range schema.Indexes {
-        btree := BTreeOpen(index.Name)
+        tree := btree.Open(index.Name)
         key := ""
         for i, a := range schema.Attributes {
             if a.Name == index.Hash {
@@ -64,7 +65,7 @@ func PutItem(request model.PutItemRequest) {
                 }
             }
         }
-        btree.PutItem(key, pos)
-        btree.Close()
+        btree.PutItem(&tree, key, pos)
+        btree.Close(tree)
     }
 }

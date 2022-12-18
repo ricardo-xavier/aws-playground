@@ -1,0 +1,28 @@
+package btree
+
+import (
+    "fmt"
+    "encoding/binary"
+)
+
+func PutItem(tree *BTree, key string, offset int64) {
+    fmt.Printf("BTREE put %v %v\n", key, offset)
+    Find(tree, key)
+    if (*tree).Found {
+        panic("DUPLICATE KEY: " + key)
+    }
+    itemSize := uint16(1 + len(key) + 8)
+    if (tree.ItemOffset + itemSize) > PAGE_SIZE {
+        panic("page full")
+    }
+    itemOffset := int(tree.ItemOffset)
+    page := tree.Stack[len(tree.Stack)-1]
+    page.Records = page.Records + 1
+    page.Offset = page.Offset + itemSize
+    page.Buf[itemOffset] = byte(len(key))
+    itemOffset++
+    copy(page.Buf[itemOffset:], []byte(key))
+    itemOffset = itemOffset + len(key)
+    binary.LittleEndian.PutUint64(page.Buf[itemOffset:], uint64(offset))
+    WritePage(*tree, tree.Root, page) //TODO pos
+}

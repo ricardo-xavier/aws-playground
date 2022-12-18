@@ -2,6 +2,7 @@ package main
 
 import (
     "os"
+    "nosql/btree"
     "nosql/model"
 )
 
@@ -10,7 +11,7 @@ import (
 func Create(request model.CreateRequest) {
     dat(request)
     sch(request)
-    BTreeCreate(request.TableName)
+    btree.Create(request.TableName)
 }
 
 func dat(request model.CreateRequest) {
