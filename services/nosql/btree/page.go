@@ -20,6 +20,7 @@ func ReadPage(tree BTree, pos uint64) Page {
 }
 
 func WritePage(tree BTree, pos uint64, page Page) {
+    fmt.Printf("BTREE write page %v: %v\n", pos, page.ToString())
     tree.F.Seek(int64(HDR_SIZE) + int64(pos) * int64(PAGE_SIZE), 0)
     hdr := make([]byte, PAGE_HDR_SIZE)
     hdr[0] = byte(page.Type)

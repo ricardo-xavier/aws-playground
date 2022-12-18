@@ -23,6 +23,7 @@ type BTree struct {
     Stack []Page
     Found bool
     ItemOffset uint16
+    Push bool
 }
 
 type Page struct {

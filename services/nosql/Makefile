@@ -1,7 +1,7 @@
-all: mycloud_nosql
+all: mycloud_nosql show_idx
 
 clean:
-	rm -f mycloud_nosql
+	rm -f mycloud_nosql show_idx
 
 run: mycloud_nosql
 	./mycloud_nosql 9000
@@ -21,3 +21,6 @@ run_demo_load:
 
 mycloud_nosql: nosql.go scan.go create.go put_item.go model/scan_request.go model/scan_response.go btree/create.go btree/open.go btree/put_item.go btree/close.go btree/find.go btree/page.go
 	go build -o mycloud_nosql nosql.go scan.go create.go put_item.go
+
+show_idx: show_idx.go
+	go build -o show_idx show_idx.go

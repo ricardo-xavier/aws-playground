@@ -11,22 +11,25 @@ func Find(tree *BTree, key string) {
     tree.Stack = append(tree.Stack, page)
     if page.Type == LEAF {
         tree.Found = false
+        tree.Push = false
         pos := 0
         for r := 0; r < int(page.Records); r++ {
             keyLen := int(page.Buf[pos])
-            pos++
             buf := make([]byte, keyLen)
-            copy(buf, page.Buf[pos:pos+keyLen])
-            pos = pos + keyLen
+            copy(buf, page.Buf[pos+1:pos+1+keyLen])
             recordKey := string(buf)
-            fmt.Printf("%d [%s]\n", r, recordKey)
-            pos = pos + 8
-            if recordKey >= key {
-                panic("TODO recordKey >= key")
+            if recordKey == key {
+                tree.Found = true
+                break
             }
+            if recordKey > key {
+                tree.Push = true
+                break
+            }
+            pos = pos + 1 + keyLen + 8
         }
         tree.ItemOffset = uint16(pos)
-        fmt.Printf("BTREE find %v: found = %v offset = %v\n", key, tree.Found, tree.ItemOffset)
+        fmt.Printf("BTREE find %v: found=%v push=%v offset=%v\n", key, tree.Found, tree.Push, tree.ItemOffset)
     } else {
         panic("TODO root=NODE")
     }
