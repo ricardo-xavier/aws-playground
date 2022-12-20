@@ -8,7 +8,9 @@ import (
 func Find(tree *BTree, key string) {
     page  := ReadPage(*tree, tree.Root)
     tree.Stack = nil
+    tree.StackPos = nil
     tree.Stack = append(tree.Stack, page)
+    tree.StackPos = append(tree.StackPos, tree.Root)
     if page.Type == LEAF {
         tree.Found = false
         tree.Push = false

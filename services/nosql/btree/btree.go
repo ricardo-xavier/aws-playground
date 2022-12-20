@@ -21,6 +21,7 @@ type BTree struct {
     Pages uint64
     Root uint64
     Stack []Page
+    StackPos []uint64
     Found bool
     ItemOffset uint16
     Push bool

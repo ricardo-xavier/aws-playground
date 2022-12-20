@@ -12,8 +12,10 @@ func PutItem(tree *BTree, key string, offset int64) {
         panic("DUPLICATE KEY: " + key)
     }
     page := tree.Stack[len(tree.Stack)-1]
+    pagePos := tree.StackPos[len(tree.StackPos)-1]
     itemSize := uint16(1 + len(key) + 8)
     if (page.Offset + itemSize) > PAGE_SIZE {
+        Split(tree, page, pagePos)
         panic("page full")
     }
     if tree.Push {
@@ -27,7 +29,7 @@ func PutItem(tree *BTree, key string, offset int64) {
     copy(page.Buf[itemOffset:], []byte(key))
     itemOffset = itemOffset + len(key)
     binary.LittleEndian.PutUint64(page.Buf[itemOffset:], uint64(offset))
-    WritePage(*tree, tree.Root, page) //TODO pos
+    WritePage(*tree, pagePos, page)
 }
 
 func push(buf []byte, start uint16, end uint16, size uint16) {
