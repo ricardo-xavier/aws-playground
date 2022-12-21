@@ -24,12 +24,13 @@ func main() {
 
     for i := 0; i < pages; i++ {
         f.Seek(int64(16 + i * 4096), 0)
-        buf = make([]byte, 6)
+        buf = make([]byte, 14)
         f.Read(buf)
         tp := buf[0]
         records := binary.LittleEndian.Uint16(buf[2:])
         offset := binary.LittleEndian.Uint16(buf[4:])
-        fmt.Printf("PAGE %d: tp=%v records=%v offset=%v\n", i, tp, records, offset)
+        next := binary.LittleEndian.Uint64(buf[6:])
+        fmt.Printf("PAGE %d: tp=%v records=%v offset=%v next=%v\n", i, tp, records, offset, next)
         for r := 0; r < int(records); r++ {
             buf = make([]byte, 1)
             f.Read(buf)

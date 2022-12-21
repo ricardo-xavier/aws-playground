@@ -13,6 +13,7 @@ func ReadPage(tree BTree, pos uint64) Page {
     page.Type = PageType(hdr[0])
     page.Records = binary.LittleEndian.Uint16(hdr[2:])
     page.Offset = binary.LittleEndian.Uint16(hdr[4:])
+    page.Next = binary.LittleEndian.Uint64(hdr[6:])
     page.Buf = make([]byte, BUF_SIZE)
     tree.F.Read(page.Buf)
     fmt.Printf("BTREE read page %v: %v\n", pos, page.ToString())
@@ -26,6 +27,11 @@ func WritePage(tree BTree, pos uint64, page Page) {
     hdr[0] = byte(page.Type)
     binary.LittleEndian.PutUint16(hdr[2:], page.Records)
     binary.LittleEndian.PutUint16(hdr[4:], page.Offset)
+    binary.LittleEndian.PutUint64(hdr[6:], page.Next)
     tree.F.Write(hdr)
     tree.F.Write(page.Buf)
+}
+
+func (page Page) ToString() string {
+    return fmt.Sprintf("type=%v records=%v offset=%v next=%v", page.Type, page.Records, page.Offset, page.Next)
 }
