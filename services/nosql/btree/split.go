@@ -16,7 +16,6 @@ func Split(tree *BTree, page Page, pagePos uint64) {
         keyLen := int(page.Buf[pos])
         pos = pos + 1 + keyLen + 8
     }
-    fmt.Printf("BTREE split %v %v\n", half, pos)
     newPage := Page{}
     newPage.Records = page.Records - half
     newPage.Offset = page.Offset - uint16(pos)
@@ -34,9 +33,9 @@ func Split(tree *BTree, page Page, pagePos uint64) {
     copy(parent.Buf[1:], page.Buf[pos+1:pos+1+keyLen])
     binary.LittleEndian.PutUint64(parent.Buf[1+keyLen:], pagePos)
 
-    fmt.Printf("BTREE split %v\n", page.ToString())
-    fmt.Printf("BTREE split %v\n", newPage.ToString())
-    fmt.Printf("BTREE split %v\n", parent.ToString())
+    fmt.Printf("BTREE split actual %v\n", page.ToString())
+    fmt.Printf("BTREE split new %v\n", newPage.ToString())
+    fmt.Printf("BTREE split parent %v\n", parent.ToString())
 
     newPage.Buf = make([]byte, BUF_SIZE)
     copy(newPage.Buf[0:], page.Buf[pos:])
@@ -44,11 +43,11 @@ func Split(tree *BTree, page Page, pagePos uint64) {
         page.Buf[i] = 0
     }
 
-    //TODO atualizar a raiz
     WritePage(*tree, pagePos, page)
     WritePage(*tree, tree.Pages, newPage)
     tree.Pages++
     WritePage(*tree, tree.Pages, parent)
+    tree.Root = tree.Pages
     tree.Pages++
 
     tree.F.Seek(0, 0)
