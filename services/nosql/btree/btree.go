@@ -19,8 +19,9 @@ type BTree struct {
     F *os.File
     Pages uint64
     Root uint64
-    Stack []Page
-    StackPos []uint64
+    StackPage []Page
+    StackPagePos []uint64
+    StackItemOffset []int
     Found bool
     ItemOffset uint16
     Push bool
