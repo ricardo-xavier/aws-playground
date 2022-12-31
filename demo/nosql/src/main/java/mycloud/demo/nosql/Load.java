@@ -8,10 +8,9 @@ import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.IOException;
 
 public class Load {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         DynamoDbClient ddb = DynamoDbClient.builder()
                 .region(Region.SA_EAST_1)
                 .build();
@@ -27,7 +26,7 @@ public class Load {
         loadCsv(userTable, leagueTable, matchTable, betTable);
     }
 
-    private static void loadCsv(DynamoDbTable<User> userTable, DynamoDbTable<League> leagueTable, DynamoDbTable<Match> matchTable, DynamoDbTable<Bet> betTable) throws IOException {
+    private static void loadCsv(DynamoDbTable<User> userTable, DynamoDbTable<League> leagueTable, DynamoDbTable<Match> matchTable, DynamoDbTable<Bet> betTable) throws Exception {
         BufferedReader reader = new BufferedReader(new FileReader("PAULOBET.csv"));
         String record;
         while ((record = reader.readLine()) != null) {

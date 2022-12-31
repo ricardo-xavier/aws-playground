@@ -9,12 +9,11 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Scan {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         DynamoDbClient ddb = DynamoDbClient.builder()
                 .region(Region.SA_EAST_1)
                 .build();

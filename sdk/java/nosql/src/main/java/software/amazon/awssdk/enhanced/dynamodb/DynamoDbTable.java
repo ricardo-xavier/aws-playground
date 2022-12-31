@@ -14,11 +14,11 @@ public class DynamoDbTable<T> {
         this.schema = schema;
     }
 
-    public PageIterable<T> scan(ScanEnhancedRequest request) {
+    public PageIterable<T> scan(ScanEnhancedRequest request) throws Exception {
         return new Scan().scan(name, schema, request);
     }
 
-    public void putItem(T item) {
+    public void putItem(T item) throws Exception {
         new PutItem<>().put(name, schema, item);
     }
 }
