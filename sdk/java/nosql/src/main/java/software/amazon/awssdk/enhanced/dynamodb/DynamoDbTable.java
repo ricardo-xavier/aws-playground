@@ -21,4 +21,8 @@ public class DynamoDbTable<T> {
     public void putItem(T item) throws Exception {
         new PutItem<>().put(name, schema, item);
     }
+
+    public T getItem(Key key) {
+        throw new UnsupportedOperationException();
+    }
 }

@@ -9,7 +9,7 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
 public class ScanAndGet {
-    public static void main(String[] args)  {
+    public static void main(String[] args) throws Exception {
         DynamoDbClient ddb = DynamoDbClient.builder()
                 .region(Region.SA_EAST_1)
                 .build();

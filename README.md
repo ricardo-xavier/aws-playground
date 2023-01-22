@@ -1,42 +1,36 @@
-# Mycloud
+# aws-playground
 
-## Objetivo
+## Purpose
 
-O objetivo do mycloud é permitir a criação e utilização de uma infraestrutura local semelhante a AWS.
-Essa infraestrutura poderá ser utilizada para estudos, experimentos e testes.
+The purpose of aws-playground is to enable the creation an use of a local aws-like infrastructure.
+This infrastructure can be used for studies, experiments and tests.
 
-Os micro-serviços que utilizam o sdk java da aws poderão acessar a infraestrutura do mycloud sem nenhuma alteração no código, basta alterar a dependência no pom.
+The micro-services that use the aws java sdk will be able to access the aws-playground without any changes in the code. Just change the dependency in the pom.xml.
 
-Exemplo:
-
-    sdk do dynamodb da aws:
+Example:
+    aws dynamodb sdk
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>dynamodb-enhanced</artifactId>
             <version>2.18.24</version>
         </dependency>
 
-    sdk do nosql do mycloud:
+    aws-playground sdk
         <dependency>
-            <groupId>mycloud.sdk</groupId>
+            <groupId>awsplayground.sdk</groupId>
             <artifactId>nosql</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
+            <version>0.2.0-SNAPSHOT</version>
         </dependency>
 
-## Módulos
+## Modules
 
-- servicos
+- services
     - nosql (dynamodb)
-    - messaging (SQS e SNS)
+    - messaging (SQS and SNS)
     - storage (S3)
     - secrets (parameter store)
     - cache (memcached)
-- cli - acesso via terminal com a mesma sintaxe do cli da aws
-- iac - manutenção da infraestrutura com a sintaxe do terraform
-- sdk - sdk java com a mesma interface do sdk da aws
-- demo - programas de exemplo e POCs
-
-O sdk java será escrito em JAVA, o restante será escrito em GO.
-
-RELEASE NOTES:
-0.1.0 - nosql scan e filter
+- cli - terminal access with aws cli sintaxe
+- iac - infrastructure maintenance with terraform sintax
+- sdk - java sdk
+- demo - examples and POCs
